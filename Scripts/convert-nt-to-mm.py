@@ -1,5 +1,23 @@
 import sys
 
+if len(sys.argv) < 3:
+    print("Converts NTriples file into a directory with Matrix-Market files")
+    print("This is primarly used to run the wrapper of our LAGraph algorithm")
+    print()
+
+    print("Usage: python3 ./convert-nt-to-mm.py <input-file.nt> <output-dir>")
+    print()
+
+    print("The script maps each vertex or edge to a number and writes")
+    print("the adjacency matrix decomposition into the specified directory")
+    print()
+    print("Resulting structure:")
+    print("\t- '<output-dir>/<number>.txt' is an adjacency matrix in Matrix-Market format")
+    print("\t  for the predicate <number>")
+    print("\t- '<output-dir>/vertices.txt' is a map from vertices to its number")
+    print("\t- '<output-dir>/edges.txt' is a map from edges to its number")
+    sys.exit()
+
 mm_prelude = """%%MatrixMarket matrix coordinate pattern general
 %%GraphBLAS type bool
 """
