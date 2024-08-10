@@ -2,7 +2,7 @@ import sys
 import random
 import datetime
 
-QUERY_COUNT = 1000
+QUERY_COUNT = 10000
 MAX_ENTITY_NUMBER = 107346161
 
 if len(sys.argv) == 1:
