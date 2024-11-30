@@ -2,16 +2,46 @@ from __future__ import annotations
 
 import os
 import sys
-import pyformlang
-from pyformlang.regular_expression.regex import Regex
+import os as pyformlang
+#from pyformlang.regular_expression.regex import Regex
 
 mm_prelude = """%%MatrixMarket matrix coordinate pattern general
 %%GraphBLAS type bool
 """
 
+if len(sys.argv) < 4:
+    print("Converts SPARQL query set into sets of adjacency matrices.")
+    print("The script loads the edge-labeled graph with enumerated vertices and labels and")
+    print("maps input SPARQL regular queries into an NFAs represented by adjacency matrix")
+    print("decomposition.")
+
+    print("Usage: python3 ./convert-sparql-to-fa.py <queries> <graph> <output-dir>")
+    print()
+
+    print("It's expected for the input queries file lines to be in such format:")
+    print("<query number>,<source or ?var> <query> <destination or ?var>")
+    print("Example:")
+    print("1,<Q10281806> (<P131>)* ?x1")
+    print("2,<Q11193> (<P279>)* ?x1")
+    print()
+    print("It's expected for the input graph to be represented in the following format:")
+    print("\t- '<output-dir>/<number>.txt' is an adjacency matrix in Matrix-Market format")
+    print("\t  for the label <number>")
+    print("\t- '<output-dir>/vertices.txt' is a map from vertices to its number")
+    print("\t- '<output-dir>/edges.txt' is a map from edges to its number")
+    print("For getting it, refer to convert-nt-to-mm script")
+    print()
+
+    print()
+    print("Resulting output:")
+    print("\t- '<query number>/<label>.mtx' is an adjacency matrix for the label")
+    print("\t- '<query number>/meta.txt' is query meta, starting/final vertices,")
+    print("\t  and used labels")
+    exit(-1)
+
 class RegAutomaton:
     """
-    Automata representation of regular grammar
+    Automaton representation of regular grammar
     """
     def __init__(self, regex: Regex):
         self.enfa = regex.to_epsilon_nfa().minimize()
@@ -38,7 +68,7 @@ class RegAutomaton:
 
     def load_adjacency_pairs(self) -> None:
         """
-        Creates boolean matrices for self automata
+        Creates boolean matrices for self automaton
         """
         res = []
         for src_node, transition in self.enfa.to_dict().items():
